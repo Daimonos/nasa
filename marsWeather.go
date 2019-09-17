@@ -1,8 +1,8 @@
 package nasa
 
 import (
-	"errors"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/daimonos/nasa/models"
@@ -10,8 +10,6 @@ import (
 
 // MarsWeatherURL is the endpoint for NASA's Mars Weather Reporting
 const MarsWeatherURL = "https://api.nasa.gov/insight_weather/?api_key=%s&feedtype=json&ver=1.0"
-const WeatherSolsKeys = "sol_keys"
-const WeatherValidityChecks="validity_checks"
 
 // GetMarsWeather executes the request to get current weather on mars
 func GetMarsWeather() (*models.MarsWeatherResp, error) {
@@ -35,13 +33,13 @@ func GetMarsWeather() (*models.MarsWeatherResp, error) {
 	if parseErr != nil {
 		return nil, parseErr
 	}
-	parseErr = json.Unmarshal(*weather[WeatherSolsKeys], &solKeys)
+	parseErr = json.Unmarshal(*weather["sol_keys"], &solKeys)
 	if parseErr != nil {
 		return nil, parseErr
 	}
-	delete(weather, WeatherSolsKeys)
+	delete(weather, "sol_keys")
 	// now we need to unmarshal the sol
-	json.Unmarshal(*weather[WeatherValidityChecks], &validityMap)
+	json.Unmarshal(*weather["validity_checks"], &validityMap)
 	parseErr = json.Unmarshal(*validityMap["sol_hours_required"], &solHoursRequired)
 	if parseErr != nil {
 		return nil, parseErr
@@ -60,7 +58,7 @@ func GetMarsWeather() (*models.MarsWeatherResp, error) {
 	if parseErr != nil {
 		return nil, parseErr
 	}
-	delete(weather, WeatherValidityChecks)
+	delete(weather, "validity_checks")
 	// once the sol_keys and validity_checks are parsed and deleted, we should just be
 	// left with the sol weather reports
 	bytes, err = json.Marshal(weather)
@@ -74,13 +72,13 @@ func GetMarsWeather() (*models.MarsWeatherResp, error) {
 	// Compile the return struct
 	vCheck := models.ValidityChecks{
 		SolHoursRequired: solHoursRequired,
-		SolsChecked: solsChecked,
-		SolValidity: solValidity,
+		SolsChecked:      solsChecked,
+		SolValidity:      solValidity,
 	}
 	returnStruct := models.MarsWeatherResp{
-		SolKeys: solKeys,
+		SolKeys:        solKeys,
 		ValidityChecks: vCheck,
-		SolWeather: solWeather,
+		SolWeather:     solWeather,
 	}
 	return &returnStruct, nil
 }
