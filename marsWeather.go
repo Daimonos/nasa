@@ -15,48 +15,48 @@ const MarsWeatherURL = "https://api.nasa.gov/insight_weather/?api_key=%s&feedtyp
 func GetMarsWeather() (*models.MarsWeatherResp, error) {
 	key, err := GetAPIKey()
 	if err != nil {
-		return nil, err
+		return nil, errors.New("Error getting API Key: " + err.Error())
 	}
 	url := fmt.Sprintf(MarsWeatherURL, key)
 	bytes, reqErr := ExecuteRequest(url)
 	if reqErr != nil {
-		return nil, reqErr
+		return nil, errors.New("Error executing request: " + reqErr.Error())
 	}
 	var weather map[string]*json.RawMessage
 	var solValidity map[string]models.ReadingValidityCheck
 	var solWeather map[string]models.MarsWeather
 	var solKeys []string
-	var solHoursRequired int16
+	var solHoursRequired int32
 	var solsChecked []string
 	var validityMap map[string]*json.RawMessage
 	parseErr := json.Unmarshal(bytes, &weather)
 	if parseErr != nil {
-		return nil, parseErr
+		return nil, errors.New("Error parsing weather: " + parseErr.Error())
 	}
 	parseErr = json.Unmarshal(*weather["sol_keys"], &solKeys)
 	if parseErr != nil {
-		return nil, parseErr
+		return nil, errors.New("Error parsing sol_keys: " + parseErr.Error())
 	}
 	delete(weather, "sol_keys")
 	// now we need to unmarshal the sol
 	json.Unmarshal(*weather["validity_checks"], &validityMap)
 	parseErr = json.Unmarshal(*validityMap["sol_hours_required"], &solHoursRequired)
 	if parseErr != nil {
-		return nil, parseErr
+		return nil, errors.New("Error parsing sol_hours: " + parseErr.Error())
 	}
 	parseErr = json.Unmarshal(*validityMap["sols_checked"], &solsChecked)
 	if parseErr != nil {
-		return nil, parseErr
+		return nil, errors.New("Error parsing sol checks" + parseErr.Error())
 	}
 	delete(validityMap, "sol_hours_required")
 	delete(validityMap, "sols_checked")
 	*weather["validity_checks"], err = json.Marshal(validityMap)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("Error marshiling weather validity checks: " + err.Error())
 	}
 	parseErr = json.Unmarshal(*weather["validity_checks"], &solValidity)
 	if parseErr != nil {
-		return nil, parseErr
+		return nil, errors.New("Error parsing validity checks: " + parseErr.Error())
 	}
 	delete(weather, "validity_checks")
 	// once the sol_keys and validity_checks are parsed and deleted, we should just be
