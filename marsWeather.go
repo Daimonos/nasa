@@ -67,7 +67,7 @@ func GetMarsWeather() (*models.MarsWeatherResp, error) {
 	}
 	parseErr = json.Unmarshal(bytes, &solWeather)
 	if parseErr != nil {
-		return nil, errors.New("Error parsing sol weather")
+		return nil, errors.New("Error parsing sol weather: " + parseErr.Error())
 	}
 	// Compile the return struct
 	vCheck := models.ValidityChecks{
