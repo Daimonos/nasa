@@ -13,7 +13,7 @@ type WDReading struct {
 	CompassPoint   string  `json:"compass_point"`
 	CompassRight   float32 `json:"compass_right"`
 	CompassUp      float32 `json:"compass_up"`
-	Samplecount    int16   `json:"ct"`
+	Samplecount    int32   `json:"ct"`
 }
 
 // ValidityCheck is the valididty check
@@ -43,7 +43,7 @@ type MarsWeather struct {
 
 // ValidityChecks are all the validity checks
 type ValidityChecks struct {
-	SolHoursRequired int16                           `json:"sol_hours_required"`
+	SolHoursRequired int32                           `json:"sol_hours_required"`
 	SolsChecked      []string                        `json:"sols_checked"`
 	SolValidity      map[string]ReadingValidityCheck `json:"sol_validity_checks"`
 }
