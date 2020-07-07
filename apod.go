@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/daimonos/nasa/models"
+	"github.com/jimdhughes/nasa/models"
 )
 
 // ApodURL is the url of NASA's APOD

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/daimonos/nasa/models"
+	"github.com/jimdhughes/nasa/models"
 )
 
 // NeoAPIUrl is the url to access the NEO api from NASA

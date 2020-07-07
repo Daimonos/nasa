@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/daimonos/nasa/models"
+	"github.com/jimdhughes/nasa/models"
 )
 
 // BaseMarsRoverImageURL is the base URL endpoint for the Mars Rover Image API

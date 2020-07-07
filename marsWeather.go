@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/daimonos/nasa/models"
+	"github.com/jimdhughes/nasa/models"
 )
 
 // MarsWeatherURL is the endpoint for NASA's Mars Weather Reporting
